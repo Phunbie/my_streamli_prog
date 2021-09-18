@@ -31,10 +31,12 @@ model_training = st.container()
 st.sidebar.header('this is where tuning occur')
 energy = load_data(1000)
 option = energy.columns.tolist()
+visual_opp = energy.columns.tolist()
+visual_opp.remove('date')
+
 features = st.sidebar.multiselect("You can select the columns you want", option,default = option)
-selected_col = []
-for i in features:
-    selected_col.append(i)
+visualize = st.sidebar.selectbox('select the columns you want to visualise', visual_opp)
+visualize2 = st.sidebar.selectbox('select another column for comparision', visual_opp)
 min_value_app=int(energy.Appliances.min())
 max_value_app=int(energy.Appliances.max())
 appl_num = st.sidebar.slider('Number of dataset',min_value=min_value_app,max_value=max_value_app)
@@ -43,8 +45,8 @@ with header:
 with dataset:
     st.header('A brief overview of the data')
     energy = load_data(500)
-    st.write(energy[selected_col].head(10))
-    st.line_chart(energy[['Appliances','Visibility']][:50])
+    st.write(energy[features].head(10))
+    st.line_chart(energy[[visualize,visualize2]][:50])
     
 
 with feature:
