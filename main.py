@@ -9,15 +9,10 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
-#import plotly.figure_factory as ff
-#import matplotlib.pyplot as plt
-#import seaborn as sns
 
 
 
-
-
-#load the data to prevent constantly reloading the data every
+#load the data to prevent constantly reloading the data everytime we
 #refresh the app
 @st.cache
 def load_data(nrows):
@@ -31,7 +26,7 @@ model_training = st.container()
 
 
 
-st.sidebar.header('this is where tuning occur')
+st.sidebar.title('Sidebar')
 energy = load_data(1000)
 y = energy.Appliances
 
@@ -40,7 +35,6 @@ def model_sel(datas,mod,val):
     mod.fit(X,y)
     val = np.array(val).reshape(1,-1)
     predicted = mod.predict(val)
-    predicted = st.write(predicted)
     return predicted
 option = energy.columns.tolist()
 visual_opp = energy.columns.tolist()
@@ -48,10 +42,9 @@ visual_opp.remove('date')
 mod_features = energy.columns.tolist()
 removel = ['Appliances','Tdewpoint','date']
 mod_features = [i  for i in  mod_features if i not in removel]
-print(mod_features)
 
-features = st.sidebar.multiselect("You can select the columns you want", option,default = option)
-visualize = st.sidebar.selectbox('select the columns you want to visualise', visual_opp)
+features = st.sidebar.multiselect("Select the columns you want to view on the displayed Dataframe", option,default = option)
+visualize = st.sidebar.selectbox('Select the columns you want to visualise', visual_opp)
 visualize2 = st.sidebar.selectbox('select another column for comparision', visual_opp)
 st.sidebar.header('Model selection options')
 model_select = st.sidebar.selectbox('select the model you want',['Decision Tree','Linear Regression'])
@@ -68,21 +61,23 @@ def sel_input(input_feat):
         resu = st.sidebar.slider(i,min_value=min_v,max_value=max_v)
         yield resu
 in_option = list(sel_input(input_feat))
-print(in_option)
 
 with header:
     st.title('My energy consumption webapp')
 with dataset:
-    st.header('A brief overview of the data')
+    st.header('A brief overview of the data(dataframe)')
     energy = load_data(1000)
     st.write(energy[features].head(10))
+    st.header('Data visualisation(line graph)')
     st.line_chart(energy[[visualize,visualize2]][:50])
-    st.header('we will display selected features')
     if model_select == 'Decision Tree':
-        model_sel(energy[mod_features],DecisionTreeRegressor(),in_option)
-    elif model_select == 'Linear Regression':
-        model_sel(energy[mod_features],LinearRegression(),in_option)
+        predicted = model_sel(energy[mod_features],DecisionTreeRegressor(),in_option)
         
+    else:
+        predicted = model_sel(energy[mod_features],LinearRegression(),in_option)
+    st.header('This is the predicted value')
+    pre =  int(predicted)
+    pre
         
     
     
