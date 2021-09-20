@@ -9,7 +9,8 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
-
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 #load the data to prevent constantly reloading the data everytime we
@@ -45,10 +46,10 @@ mod_features = [i  for i in  mod_features if i not in removel]
 
 features = st.sidebar.multiselect("Select the columns you want to view on the displayed Dataframe", option,default = option)
 visualize = st.sidebar.selectbox('Select the columns you want to visualise', visual_opp)
-visualize2 = st.sidebar.selectbox('select another column for comparision', visual_opp)
+visualize2 = st.sidebar.selectbox('select another column for comparison', visual_opp)
 st.sidebar.header('Model selection options')
 model_select = st.sidebar.selectbox('select the model you want',['Decision Tree','Linear Regression'])
-input_feat = st.sidebar.multiselect('input features',mod_features,mod_features)
+input_feat = st.sidebar.multiselect('input features',mod_features,mod_features[:10])
 
     
 
@@ -70,11 +71,17 @@ with dataset:
     st.write(energy[features].head(10))
     st.header('Data visualisation(line graph)')
     st.line_chart(energy[[visualize,visualize2]][:50])
+    st.header('Data visualisation(correlation heat map)')
+    fig, ax = plt.subplots(figsize=(8,6))
+    corre = energy[input_feat]
+    cor = corre.corr()
+    sns.heatmap(cor,ax=ax,annot=True)
+    st.write(fig)
     if model_select == 'Decision Tree':
-        predicted = model_sel(energy[mod_features],DecisionTreeRegressor(),in_option)
+        predicted = model_sel(energy[input_feat],DecisionTreeRegressor(),in_option)
         
     else:
-        predicted = model_sel(energy[mod_features],LinearRegression(),in_option)
+        predicted = model_sel(energy[input_feat],LinearRegression(),in_option)
     st.header('This is the predicted value')
     pre =  int(predicted)
     pre
