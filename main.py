@@ -11,6 +11,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
 import seaborn as sns
 import matplotlib.pyplot as plt
+from PIL import Image
 
 
 #loads the data to prevent constantly reloading the data everytime we
@@ -19,7 +20,7 @@ import matplotlib.pyplot as plt
 def load_data(nrows):
     energy = pd.read_csv('dataa/energydata_complete.csv', nrows=nrows)
     return energy
-
+image = Image.open('Energyi.jpg')
 header = st.container()
 dataset = st.container()
 feature = st.container()
@@ -65,6 +66,7 @@ in_option = list(sel_input(input_feat))
 
 with header:
     st.title('Energy consumption prediction webapp')
+    st.image(image,use_column_width=True)
 with dataset:
     st.header('A brief overview of the data(dataframe)')
     energy = load_data(1000)
