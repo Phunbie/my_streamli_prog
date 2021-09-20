@@ -13,7 +13,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-#load the data to prevent constantly reloading the data everytime we
+#loads the data to prevent constantly reloading the data everytime we
 #refresh the app
 @st.cache
 def load_data(nrows):
@@ -31,7 +31,7 @@ st.sidebar.title('Sidebar')
 energy = load_data(1000)
 y = energy.Appliances
 
-def model_sel(datas,mod,val):
+def model_sel(datas,mod,val): #function for model prediction
     X = datas
     mod.fit(X,y)
     val = np.array(val).reshape(1,-1)
@@ -48,7 +48,7 @@ features = st.sidebar.multiselect("Select the columns you want to view on the di
 visualize = st.sidebar.selectbox('Select the columns you want to visualise', visual_opp)
 visualize2 = st.sidebar.selectbox('select another column for comparison', visual_opp)
 st.sidebar.header('Model selection options')
-model_select = st.sidebar.selectbox('select the model you want',['Decision Tree','Linear Regression'])
+model_select = st.sidebar.selectbox('select the machine learning model you want for prediction',['Decision Tree','Linear Regression'])
 input_feat = st.sidebar.multiselect('input features',mod_features,mod_features[:10])
 
     
@@ -64,13 +64,19 @@ def sel_input(input_feat):
 in_option = list(sel_input(input_feat))
 
 with header:
-    st.title('My energy consumption webapp')
+    st.title('Energy consumption prediction webapp')
 with dataset:
     st.header('A brief overview of the data(dataframe)')
     energy = load_data(1000)
     st.write(energy[features].head(10))
     st.header('Data visualisation(line graph)')
     st.line_chart(energy[[visualize,visualize2]][:50])
+    st.header('Data visualisation(regression plot)')
+    fig2, ax = plt.subplots(figsize=(8,6))
+    X_reg = visualize
+    y_reg = visualize2
+    sns.regplot(X_reg,y_reg,data=energy,ax=ax)
+    st.write(fig2)
     st.header('Data visualisation(correlation heat map)')
     fig, ax = plt.subplots(figsize=(8,6))
     corre = energy[input_feat]
@@ -82,10 +88,8 @@ with dataset:
         
     else:
         predicted = model_sel(energy[input_feat],LinearRegression(),in_option)
-    st.header('This is the predicted value')
-    pre =  int(predicted)
-    pre
-        
+  
+    st.header('The predicted  energy use is {} watt per hour'.format(round(int(predicted))))    
     
     
     
