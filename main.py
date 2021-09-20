@@ -60,7 +60,7 @@ def sel_input(input_feat):
     for i in input_feat:
         min_v = (energy[i].min())
         max_v = (energy[i].max())
-        resu = st.sidebar.slider(i,min_value=min_v,max_value=max_v)
+        resu = st.sidebar.slider(i,min_value=int(min_v),max_value=int(max_v))
         yield resu
 in_option = list(sel_input(input_feat))
 
