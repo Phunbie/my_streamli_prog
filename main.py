@@ -59,7 +59,7 @@ def sel_input(input_feat):
     for i in input_feat:
         min_v = (energy[i].min())
         max_v = (energy[i].max())
-        resu = st.sidebar.slider(i,min_value=min_v,max_value=max_v)
+        resu = st.sidebar.slider(i,min_value=int(min_v),max_value=int(max_v))
         yield resu
 in_option = list(sel_input(input_feat))
 
@@ -92,7 +92,7 @@ with dataset:
     st.header('The predicted  energy use is {} watt per hour'.format(round(int(predicted))))    
     
     
-    #st.markdown('You can reach me via [linkdIn](https://www.linkedin.com/in/oluwafunbi-adeneye-811301184) or [email](adeneyeoluwafunbi@gmail.com)')
+    st.markdown('You can reach me via [linkdIn](https://www.linkedin.com/in/oluwafunbi-adeneye-811301184) or [email](adeneyeoluwafunbi@gmail.com)')
     
     
     
