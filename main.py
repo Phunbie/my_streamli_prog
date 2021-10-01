@@ -95,9 +95,6 @@ with dataset:
     
     
     
-    
-    
-    
-#with model_training:
+st.markdown('You can reach me via [linkdIn](https://www.linkedin.com/in/oluwafunbi-adeneye-811301184?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3Bs%2FswniEDTdavLY8q6D9uDw%3D%3D ) or [email](adeneyeoluwafunbi@gmail.com)')
     
     
