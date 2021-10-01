@@ -11,7 +11,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
 import seaborn as sns
 import matplotlib.pyplot as plt
-from PIL import Image
 
 
 #loads the data to prevent constantly reloading the data everytime we
@@ -20,7 +19,7 @@ from PIL import Image
 def load_data(nrows):
     energy = pd.read_csv('dataa/energydata_complete.csv', nrows=nrows)
     return energy
-image = Image.open('Energyi.jpg')
+
 header = st.container()
 dataset = st.container()
 feature = st.container()
@@ -60,13 +59,12 @@ def sel_input(input_feat):
     for i in input_feat:
         min_v = (energy[i].min())
         max_v = (energy[i].max())
-        resu = st.sidebar.slider(i,min_value=int(min_v),max_value=int(max_v))
+        resu = st.sidebar.slider(i,min_value=min_v,max_value=max_v)
         yield resu
 in_option = list(sel_input(input_feat))
 
 with header:
     st.title('Energy consumption prediction webapp')
-    st.image(image,use_column_width=True)
 with dataset:
     st.header('A brief overview of the data(dataframe)')
     energy = load_data(1000)
@@ -94,7 +92,11 @@ with dataset:
     st.header('The predicted  energy use is {} watt per hour'.format(round(int(predicted))))    
     
     
+    st.markdown('You can reach me via [linkdIn](https://www.linkedin.com/in/oluwafunbi-adeneye-811301184) or [email](adeneyeoluwafunbi@gmail.com)')
     
-st.markdown('You can reach me via [linkdIn](https://www.linkedin.com/in/oluwafunbi-adeneye-811301184?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3Bs%2FswniEDTdavLY8q6D9uDw%3D%3D ) or [email](adeneyeoluwafunbi@gmail.com)')
+    
+    
+    
+#with model_training:
     
     
